@@ -1,12 +1,18 @@
 'use client';
 
 import { useAIConversation } from '@/app/client';
-import { Button, Flex, View, withAuthenticator } from '@aws-amplify/ui-react';
+import {
+  Button,
+  Flex,
+  View,
+  withAuthenticator,
+  WithAuthenticatorProps,
+} from '@aws-amplify/ui-react';
 import { AIConversation } from '@aws-amplify/ui-react-ai';
 import '@aws-amplify/ui-react/styles.css';
 import Markdown from 'react-markdown';
 
-function App({ signOut }: { signOut: any }) {
+const App = ({ signOut }: WithAuthenticatorProps) => {
   const [
     {
       data: { messages },
@@ -48,6 +54,6 @@ function App({ signOut }: { signOut: any }) {
       </Flex>
     </Flex>
   );
-}
+};
 
 export default withAuthenticator(App);
