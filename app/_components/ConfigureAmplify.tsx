@@ -1,7 +1,9 @@
-"use client";
+'use client';
 
-import config from "@/amplify_outputs.json";
-import { Amplify } from "aws-amplify";
+import { Amplify } from 'aws-amplify';
+
+// @ts-ignore
+import config from '@/amplify_outputs.json';
 
 Amplify.configure(config, { ssr: true });
 
