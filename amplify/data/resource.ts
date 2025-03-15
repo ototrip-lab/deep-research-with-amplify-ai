@@ -1,9 +1,9 @@
-import { a, defineData, type ClientSchema } from '@aws-amplify/backend';
+import { a, defineData, type ClientSchema } from "@aws-amplify/backend";
 
-import { totalPrompt, writerPrompt } from '../prompts';
-import { chatHandler } from './chatHandler/resource';
-import { planningAgent } from './planningAgent/resource';
-import { searchAgent } from './searchAgent/resource';
+import { totalPrompt, writerPrompt } from "../prompts";
+import { chatHandler } from "./chatHandler/resource";
+import { planningAgent } from "./planningAgent/resource";
+import { searchAgent } from "./searchAgent/resource";
 
 const schema = a.schema({
   User: a
@@ -20,7 +20,7 @@ const schema = a.schema({
     .returns(
       a.customType({
         value: a.string(),
-      })
+      }),
     )
     .handler(a.handler.function(searchAgent))
     .authorization((allow) => allow.authenticated()),
@@ -33,7 +33,7 @@ const schema = a.schema({
     .returns(
       a.customType({
         value: a.string(),
-      })
+      }),
     )
     .handler(a.handler.function(planningAgent))
     .authorization((allow) => allow.authenticated()),
@@ -41,7 +41,7 @@ const schema = a.schema({
   // Define AI Kit
   chat: a
     .conversation({
-      aiModel: a.ai.model('Claude 3.5 Sonnet'),
+      aiModel: a.ai.model("Claude 3.5 Sonnet"),
       systemPrompt: totalPrompt,
       handler: chatHandler,
       inferenceConfiguration: {
@@ -49,26 +49,26 @@ const schema = a.schema({
       },
       tools: [
         a.ai.dataTool({
-          name: 'planning',
-          description: 'Planning tool',
-          query: a.ref('planningAgent'),
+          name: "planning",
+          description: "Planning tool",
+          query: a.ref("planningAgent"),
         }),
         a.ai.dataTool({
-          name: 'search',
-          description: 'Search tool',
-          query: a.ref('searchAgent'),
+          name: "search",
+          description: "Search tool",
+          query: a.ref("searchAgent"),
         }),
         a.ai.dataTool({
-          name: 'writer',
-          description: 'Writer tool',
-          query: a.ref('writerAgent'),
+          name: "writer",
+          description: "Writer tool",
+          query: a.ref("writerAgent"),
         }),
       ],
     })
     .authorization((allow) => allow.owner()),
   writerAgent: a
     .generation({
-      aiModel: a.ai.model('Claude 3.5 Sonnet'),
+      aiModel: a.ai.model("Claude 3.5 Sonnet"),
       systemPrompt: writerPrompt,
     })
     .arguments({ description: a.string() })
@@ -81,6 +81,6 @@ export type Schema = ClientSchema<typeof schema>;
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: 'userPool',
+    defaultAuthorizationMode: "userPool",
   },
 });

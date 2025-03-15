@@ -1,44 +1,95 @@
-# Deep Research with Amplify AI
+# Amplify Gen2 Next.js Quickstart
 
-This project provides a comprehensive research assistant powered by AWS Amplify and AI. It uses a multi-agent approach to deliver thorough research on user queries.
+This project is a quickstart template combining [AWS Amplify Gen2](https://docs.amplify.aws/gen2/) with [Next.js](https://nextjs.org/). It leverages Amplify Gen2's TypeScript-based infrastructure definitions and Next.js frontend framework to quickly build full-stack applications.
 
 ## Features
 
-- Planning Agent: Creates structured research plans with 5 distinct categories
-- Search Agent: Retrieves high-quality information from trusted sources
-- Writer Agent: Synthesizes research findings into cohesive articles
-- Total Agent: Orchestrates the workflow across all specialized agents
+This quickstart includes the following features:
 
-## Architecture
+- **Authentication** - User authentication using Amplify Auth
+- **Data Modeling** - Data modeling and API using Amplify Data
 
-Built with:
-- Next.js for the frontend
-- AWS Amplify Gen2 for backend services
-- LangChain and LangGraph for AI workflow orchestration
-- AWS Bedrock for AI model access
-- Tavily for web search capabilities
+## Prerequisites
 
-## Getting Started
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [AWS Account](https://aws.amazon.com/)
+- [AWS CLI](https://aws.amazon.com/cli/) (configured)
+
+## Setup
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
 
-2. Configure Amplify:
+2. Run the Amplify Gen2 backend locally:
+
 ```bash
-npx amplify pull
+npx ampx sandbox
 ```
 
-3. Run the development server:
+3. In a separate terminal, start the Next.js development server:
+
 ```bash
 npm run dev
 ```
 
-## Performance Optimizations
+4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
-This project includes several optimizations:
-- Streamlined prompts to reduce token usage
-- Error handling with retry mechanisms
-- Performance monitoring with console.time
-- Enhanced user experience with loading indicators
+## Project Structure
+
+```
+/
+├── app/                  # Next.js application code
+│   ├── _components/      # Shared components
+│   ├── layout.tsx        # Root layout
+│   └── page.tsx          # Main page
+├── amplify/              # Amplify Gen2 backend definitions
+│   ├── auth/             # Authentication resources
+│   ├── data/             # Data model resources
+│   └── backend.ts        # Backend definition
+├── public/               # Static assets
+└── ...
+```
+
+## Deployment
+
+To deploy to AWS using Amplify Gen2:
+
+1. Deploy the backend:
+
+```bash
+npx ampx deploy
+```
+
+2. Build the frontend:
+
+```bash
+npm run build
+```
+
+3. You can deploy using Amplify Hosting or deploy your Next.js application to any hosting service of your choice.
+
+## Learning Resources
+
+- [Amplify Gen2 Documentation](https://docs.amplify.aws/gen2/)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Amplify UI Components](https://ui.docs.amplify.aws/)
+
+## Local Development
+
+```bash
+# Start development server
+npm run dev
+
+# Format code
+npm run format
+
+# Type checking
+npm run tsc
+```
+
+## License
+
+This project is released under the [MIT License](LICENSE).
