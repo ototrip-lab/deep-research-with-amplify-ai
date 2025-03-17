@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
+import { BasicLayout } from "@/app/_components/BasicLayout";
 import { ConfigureAmplifyClientSide } from "./_components/ConfigureAmplify";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -18,9 +19,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className} style={{ margin: 0 }}>
         <ConfigureAmplifyClientSide />
-        {children}
+        <BasicLayout>{children}</BasicLayout>
       </body>
     </html>
   );
