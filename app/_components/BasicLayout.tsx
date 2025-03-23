@@ -13,14 +13,14 @@ import {
 } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import { useRouter } from "next/navigation";
-import { AiFillHome } from "react-icons/ai";
+import { AiOutlineHistory, AiOutlineHome } from "react-icons/ai";
 
 type Props = {
   headerTitle?: string;
   children: React.ReactNode;
 };
 
-const Layout = ({ children, headerTitle = "Deep Research" }: Props) => {
+const Layout = ({ children, headerTitle = "Amplify AI Kit" }: Props) => {
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
   const { tokens } = useTheme();
   const router = useRouter();
@@ -40,6 +40,7 @@ const Layout = ({ children, headerTitle = "Deep Research" }: Props) => {
           height="100hv"
           overflow="hidden"
           paddingTop={tokens.space.xxxl}
+          paddingBottom={tokens.space.xxxl}
         >
           <Button
             variation="primary"
@@ -48,10 +49,18 @@ const Layout = ({ children, headerTitle = "Deep Research" }: Props) => {
           >
             New Chat
           </Button>
+
           <Flex gap={tokens.space.medium} alignItems="center">
-            <AiFillHome />
+            <AiOutlineHome />
             <Button variation="link" onClick={() => router.push("/")}>
               Home
+            </Button>
+          </Flex>
+
+          <Flex gap={tokens.space.medium} alignItems="center">
+            <AiOutlineHistory />
+            <Button variation="link" onClick={() => router.push("/history")}>
+              History
             </Button>
           </Flex>
         </Flex>
