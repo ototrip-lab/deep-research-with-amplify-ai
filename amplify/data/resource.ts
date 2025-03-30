@@ -1,6 +1,6 @@
 import { a, defineData, type ClientSchema } from "@aws-amplify/backend";
 
-import { totalPrompt, writerPrompt } from "../prompts";
+import { supervisorPrompt, writerPrompt } from "../prompts";
 import { chatHandler } from "./chatHandler/resource";
 import { planningAgent } from "./planningAgent/resource";
 import { searchAgent } from "./searchAgent/resource";
@@ -42,7 +42,7 @@ const schema = a.schema({
   chat: a
     .conversation({
       aiModel: a.ai.model("Claude 3.5 Sonnet"),
-      systemPrompt: totalPrompt,
+      systemPrompt: supervisorPrompt,
       handler: chatHandler,
       inferenceConfiguration: {
         temperature: 0.5,
