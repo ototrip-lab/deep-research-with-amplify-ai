@@ -23,19 +23,27 @@ This quickstart includes the following features:
 npm install
 ```
 
-2. Run the Amplify Gen2 backend locally:
+2. Set Tavily API Key
+
+```bash
+$ npx ampx sandbox secret set TAVILY_API_KEY
+? Enter secret value: ###
+Done!
+```
+
+3. Run the Amplify Gen2 backend locally:
 
 ```bash
 npx ampx sandbox
 ```
 
-3. In a separate terminal, start the Next.js development server:
+4. In a separate terminal, start the Next.js development server:
 
 ```bash
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
 ## Project Structure
 

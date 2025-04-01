@@ -23,19 +23,27 @@
 npm install
 ```
 
-2. Amplify Gen2のバックエンドをローカルで実行します：
+2. Tavily API Keyをセットします：
+
+```bash
+$ npx ampx sandbox secret set TAVILY_API_KEY
+? Enter secret value: ###
+Done!
+```
+
+3. Amplify Gen2のバックエンドをローカルで実行します：
 
 ```bash
 npx ampx sandbox
 ```
 
-3. 別のターミナルでNext.jsの開発サーバーを起動します：
+4. 別のターミナルでNext.jsの開発サーバーを起動します：
 
 ```bash
 npm run dev
 ```
 
-4. ブラウザで [http://localhost:3000](http://localhost:3000) を開いてアプリケーションを確認します。
+5. ブラウザで [http://localhost:3000](http://localhost:3000) を開いてアプリケーションを確認します。
 
 ## プロジェクト構造
 
