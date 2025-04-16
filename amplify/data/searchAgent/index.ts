@@ -1,5 +1,5 @@
 import { env } from '$amplify/env/searchAgent';
-import { BedrockChat } from '@langchain/community/chat_models/bedrock';
+import { ChatBedrockConverse } from "@langchain/aws";
 import { TavilySearchResults } from '@langchain/community/tools/tavily_search';
 import {
   AIMessage,
@@ -17,7 +17,7 @@ const tavilyTool = new TavilySearchResults({
   maxResults: 3,
   apiKey: env.TAVILY_API_KEY,
 });
-const model = new BedrockChat({
+const model = new ChatBedrockConverse({
   model: BEDROCK_MODEL,
 });
 const modelWithTavily = model.bindTools([tavilyTool]);
