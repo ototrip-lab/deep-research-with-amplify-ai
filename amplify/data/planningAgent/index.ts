@@ -1,11 +1,11 @@
-import { BedrockChat } from '@langchain/community/chat_models/bedrock';
+import { ChatBedrockConverse } from '@langchain/aws';
 
 import { planningPrompt } from '../../prompts';
 import { BEDROCK_MODEL } from '../constants';
 import type { Schema } from '../resource';
 
 // AWS SDK
-const model = new BedrockChat({
+const model = new ChatBedrockConverse({
   model: BEDROCK_MODEL,
 });
 

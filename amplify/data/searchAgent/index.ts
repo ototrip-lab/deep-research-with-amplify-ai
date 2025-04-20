@@ -1,48 +1,49 @@
 import { env } from '$amplify/env/searchAgent';
-import { ChatBedrockConverse } from "@langchain/aws";
-import { TavilySearchResults } from '@langchain/community/tools/tavily_search';
-import {
-  AIMessage,
-  HumanMessage,
-  SystemMessage,
-} from '@langchain/core/messages';
-import { MessagesAnnotation, StateGraph } from '@langchain/langgraph';
-import { ToolNode } from '@langchain/langgraph/prebuilt';
+import { ChatBedrockConverse } from '@langchain/aws';
+import { HumanMessage, SystemMessage } from '@langchain/core/messages';
+import { ChatPromptTemplate } from '@langchain/core/prompts';
+import { RunnableLambda } from '@langchain/core/runnables';
+import { TavilySearch } from '@langchain/tavily';
 
 import { searchPrompt } from '../../prompts';
 import { BEDROCK_MODEL } from '../constants';
 import type { Schema } from '../resource';
 
-const tavilyTool = new TavilySearchResults({
+const tavilyTool = new TavilySearch({
   maxResults: 3,
-  apiKey: env.TAVILY_API_KEY,
+  tavilyApiKey: env.TAVILY_API_KEY,
 });
 const model = new ChatBedrockConverse({
   model: BEDROCK_MODEL,
 });
 const modelWithTavily = model.bindTools([tavilyTool]);
-const toolNode = new ToolNode([tavilyTool]);
+const prompt = ChatPromptTemplate.fromMessages([
+  new SystemMessage(searchPrompt),
+  ['placeholder', '{messages}'],
+]);
+const chain = prompt.pipe(modelWithTavily);
 
-// Define the function that determines whether to continue or not
-const shouldContinue = ({ messages }: typeof MessagesAnnotation.State) => {
-  const lastMessage = messages[messages.length - 1] as AIMessage;
+const toolChain = RunnableLambda.from(async (userInput: string, config) => {
+  const aiMsg = await chain.invoke(
+    {
+      messages: [new HumanMessage(userInput)],
+    },
+    config
+  );
+  console.log({ aiMsg });
 
-  // If the LLM makes a tool call, then we route to the "tools" node
-  if (lastMessage.tool_calls?.length) {
-    return 'tools';
-  }
-  // Otherwise, we stop (reply to the user) using the special "__end__" node
-  return '__end__';
-};
+  // @ts-ignore
+  const toolMsgs = await tavilyTool.batch(aiMsg.tool_calls, config);
+  console.log({ toolMsgs });
 
-// Define the function that calls the model
-const callModel = async (state: typeof MessagesAnnotation.State) => {
-  const response = await modelWithTavily.invoke(state.messages);
-  console.log({ response });
-
-  // We return a list, because this will get added to the existing list
-  return { messages: [response] };
-};
+  const humanMessage = new HumanMessage(userInput);
+  return chain.invoke(
+    {
+      messages: [humanMessage, aiMsg, ...toolMsgs],
+    },
+    config
+  );
+});
 
 export const handler: Schema['searchAgent']['functionHandler'] = async (
   event
@@ -57,25 +58,9 @@ export const handler: Schema['searchAgent']['functionHandler'] = async (
   if (!authorization || !username || !message) {
     throw new Error('Unauthorized');
   }
-
-  // Define a new graph
-  const workflow = new StateGraph(MessagesAnnotation)
-    .addNode('agent', callModel)
-    .addEdge('__start__', 'agent')
-
-    .addNode('tools', toolNode)
-    .addEdge('tools', 'agent')
-
-    .addConditionalEdges('agent', shouldContinue);
-
-  // Finally, we compile it into a LangChain Runnable.
-  const app = workflow.compile();
-
   // Use the agent
-  const finalState = await app.invoke({
-    messages: [new SystemMessage(searchPrompt), new HumanMessage(message)],
-  });
-  const answer = finalState.messages[finalState.messages.length - 1];
+  const answer = await toolChain.invoke(message);
+  console.log({ answer });
 
   return {
     value: answer.content as string,
