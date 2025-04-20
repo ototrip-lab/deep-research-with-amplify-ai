@@ -20,10 +20,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-const Layout = ({
-  children,
-  headerTitle = "Deep Research with Amplify AI Kit",
-}: Props) => {
+const Layout = ({ children, headerTitle = "Amplify AI Kit" }: Props) => {
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
   const { tokens } = useTheme();
   const router = useRouter();
@@ -45,7 +42,14 @@ const Layout = ({
         >
           <Button
             variation="primary"
-            onClick={() => router.push("/chat")}
+            onClick={() => {
+              const pathname = window.location.pathname;
+              if (pathname === "/chat") {
+                window.location.reload();
+              } else {
+                router.push("/chat");
+              }
+            }}
             isDisabled={authStatus !== "authenticated"}
           >
             New Chat
