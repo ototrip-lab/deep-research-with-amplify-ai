@@ -28,7 +28,7 @@
     "@biomejs/biome": "1.9.4",
     "@langchain/aws": "0.1.8",
     "@langchain/core": "0.3.44",
-    "@langchain/tavily": "0.1.1",
+    "@langchain/tavily": "1.2.0",
     "@parcel/watcher": "2.5.1",
     "@types/node": "22.14.1",
     "@types/react": "19.1.1",
