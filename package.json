@@ -27,7 +27,7 @@
     "@aws-amplify/backend-cli": "1.5.0",
     "@biomejs/biome": "1.9.4",
     "@langchain/aws": "0.1.8",
-    "@langchain/core": "0.3.44",
+    "@langchain/core": "1.1.8",
     "@langchain/tavily": "0.1.1",
     "@parcel/watcher": "2.5.1",
     "@types/node": "22.14.1",
